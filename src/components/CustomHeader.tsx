@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, Layout } from 'antd';
 import { MailOutlined, AppstoreOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 const { Header } = Layout;
 
 const CustomHeader = () => {
@@ -20,10 +21,7 @@ const CustomHeader = () => {
         style={{ maxWidth: '1400px', margin: '0 auto' }}
       >
         <Menu.Item key='mail' icon={<MailOutlined />}>
-          Navigation One
-        </Menu.Item>
-        <Menu.Item key='app' disabled icon={<AppstoreOutlined />}>
-          Navigation Two
+          <Link to='/'>Home</Link>
         </Menu.Item>
       </Menu>
     </Header>

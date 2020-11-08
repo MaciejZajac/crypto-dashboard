@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { IFResponse } from '../types';
-import { Table } from 'antd';
+import { Avatar, Table } from 'antd';
 import { TablePaginationConfig } from 'antd/lib/table';
+import { Link } from 'react-router-dom';
+import { EOF } from 'dns';
 enum Currency {
   USD = 'usd',
   EUR = 'eur',
@@ -17,14 +19,14 @@ interface IDataParams {
   page: number;
   sparkline?: boolean;
   price_change_percentage?: string; // 1h, 24h, 7d, 14d, 30d, 200d, 1y
-  total: 100;
+  total: 200;
 }
 
 const defaultParams: IDataParams = {
   vs_currency: Currency.EUR,
   per_page: 10,
   page: 1,
-  total: 100,
+  total: 200,
 };
 
 const TableComponent = () => {
@@ -41,16 +43,18 @@ const TableComponent = () => {
   }, []);
 
   const getTableData = ({ params }: { params: IDataParams }) => {
+    setLoading(true);
     Axios.get('https://api.coingecko.com/api/v3/coins/markets', {
       params,
     })
       .then((response) => {
-        console.log('response', response);
-        console.log('response.data', response.data);
         setTableData(response.data);
         setLoading(false);
       })
-      .catch((err) => console.log('Error', err));
+      .catch((err) => {
+        setLoading(false);
+        console.log('error:', err);
+      });
   };
 
   const handleTableChange = (
@@ -60,20 +64,16 @@ const TableComponent = () => {
   ) => {
     setPagination({
       ...pagination,
+      pageSize: pag.pageSize,
       currentPage: pag.current,
     });
-    console.log('pag', pag);
+
     const params: IDataParams = {
       ...dataParams,
+      per_page: pag.pageSize || 10,
       page: pag.current || 1,
     };
-    console.log('params', params);
 
-    // setLoading(true);
-    // const params: IDataParams {
-
-    // }
-    setLoading(true);
     getTableData({ params });
   };
 
@@ -89,6 +89,7 @@ const TableComponent = () => {
       dataIndex: 'name',
       key: 'name',
       width: '20%',
+      render: (text: string) => <Link to={`/${text}`}>{text}</Link>,
     },
     {
       title: '24H cap change',
@@ -114,7 +115,7 @@ const TableComponent = () => {
     <Table
       dataSource={tableData}
       columns={columns}
-      pagination={{ total: 50 }}
+      pagination={{ total: 50, showSizeChanger: true }}
       loading={loading}
       onChange={handleTableChange}
       style={{ maxWidth: '1400px', margin: '0 auto' }}
