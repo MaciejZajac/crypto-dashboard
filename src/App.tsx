@@ -1,11 +1,12 @@
 import React from 'react';
-import TableComponent from './components/TableComponent';
+import TableViewContainer from './containers/Home/TableViewContainer';
+import CustomLayout from './containers/Layout/CustomLayout';
 
 const App = () => {
   return (
-    <div>
-      <TableComponent />
-    </div>
+    <CustomLayout>
+      <TableViewContainer />
+    </CustomLayout>
   );
 };
 export default App;
