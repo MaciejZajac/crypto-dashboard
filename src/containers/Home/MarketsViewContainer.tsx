@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import MarketsTable from '../../components/MarketsTable';
+import { Col, Row, Typography } from 'antd';
+import { IFResponse } from '../../types';
 import Axios from 'axios';
-import { IFResponse } from '../types';
-import { Avatar, Space, Table, Typography } from 'antd';
 import { TablePaginationConfig } from 'antd/lib/table';
-import { Link } from 'react-router-dom';
-import { UserOutlined } from '@ant-design/icons';
 
 enum Currency {
   USD = 'usd',
@@ -30,7 +29,7 @@ const defaultParams: IDataParams = {
   total: 200,
 };
 
-const TableComponent = () => {
+const MarketsViewContainer = () => {
   const [dataParams, setDataParams] = useState<IDataParams>(defaultParams);
   const [tableData, setTableData] = useState<IFResponse[]>([]);
   const [pagination, setPagination] = useState<any>({
@@ -59,11 +58,7 @@ const TableComponent = () => {
       });
   };
 
-  const handleTableChange = (
-    pag: TablePaginationConfig,
-    filters: any,
-    sorter: any
-  ) => {
+  const handleTableChange = (pag: TablePaginationConfig) => {
     setPagination({
       ...pagination,
       pageSize: pag.pageSize,
@@ -79,55 +74,17 @@ const TableComponent = () => {
     setDataParams(params);
   };
 
-  const columns = [
-    {
-      title: 'Rank',
-      dataIndex: 'market_cap_rank',
-      key: 'market_cap_rank',
-      width: '60px',
-    },
-    {
-      title: 'Name',
-      dataIndex: 'image',
-      key: 'image',
-      render: (image: string, row: any) => {
-        return (
-          <Link to={`/${row.id}`}>
-            <Space size={14}>
-              <Avatar src={image} icon={<UserOutlined />} />
-              <Typography.Text>{row.name}</Typography.Text>
-            </Space>
-          </Link>
-        );
-      },
-    },
-    {
-      title: '24H cap change',
-      dataIndex: 'market_cap_change_percentage_24h',
-      key: 'market_cap_change_percentage_24h',
-    },
-    {
-      title: '24H change',
-      dataIndex: 'price_change_24h',
-      key: 'price_change_24h',
-    },
-    {
-      title: 'Volume',
-      dataIndex: 'total_volume',
-      key: 'total_volume',
-    },
-  ];
-
   return (
-    <Table
-      dataSource={tableData}
-      columns={columns}
-      pagination={{ total: 200, showSizeChanger: true }}
-      loading={loading}
-      onChange={handleTableChange}
-      style={{ maxWidth: '1400px', margin: '0 auto' }}
-    />
+    <>
+      <Row>
+        <Col xl={12}>
+          {/* <Typography.Text>Lorem ipsum</Typography.Text> */}
+          <Typography.Title>CoinGecko API cryptoDashbord</Typography.Title>
+        </Col>
+      </Row>
+      <MarketsTable params={{ tableData, loading, handleTableChange }} />
+    </>
   );
 };
 
-export default TableComponent;
+export default MarketsViewContainer;

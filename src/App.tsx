@@ -1,20 +1,13 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import CoinViewContainer from './containers/Home/CoinViewContainer';
-import TableViewContainer from './containers/Home/TableViewContainer';
-import CustomLayout from './containers/Layout/CustomLayout';
+import { BrowserRouter } from 'react-router-dom';
+import Router from './Router';
 
 import 'antd/dist/antd.less';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <CustomLayout>
-        <Switch>
-          <Route exact path='/' component={TableViewContainer} />
-          <Route exact path='/:coinId' component={CoinViewContainer} />
-        </Switch>
-      </CustomLayout>
+      <Router />
     </BrowserRouter>
   );
 };
