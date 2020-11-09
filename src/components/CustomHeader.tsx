@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, Layout } from 'antd';
-import { MailOutlined, AppstoreOutlined } from '@ant-design/icons';
+import { MailOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 const { Header } = Layout;
 

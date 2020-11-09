@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { IFResponse } from '../types';
-import { Avatar, Table } from 'antd';
+import { Avatar, Space, Table, Typography } from 'antd';
 import { TablePaginationConfig } from 'antd/lib/table';
 import { Link } from 'react-router-dom';
-import { EOF } from 'dns';
+import { UserOutlined } from '@ant-design/icons';
+
 enum Currency {
   USD = 'usd',
   EUR = 'eur',
@@ -17,7 +18,7 @@ interface IDataParams {
   order?: string; //  market_cap_desc, gecko_desc, gecko_asc, market_cap_asc, market_cap_desc, volume_asc, volume_desc, id_asc, id_desc
   per_page: number; // 1 - 250
   page: number;
-  sparkline?: boolean;
+  sparkline?: boolean; // gives huge array with points
   price_change_percentage?: string; // 1h, 24h, 7d, 14d, 30d, 200d, 1y
   total: 200;
 }
@@ -40,7 +41,7 @@ const TableComponent = () => {
 
   useEffect(() => {
     getTableData({ params: dataParams });
-  }, []);
+  }, [dataParams]);
 
   const getTableData = ({ params }: { params: IDataParams }) => {
     setLoading(true);
@@ -48,6 +49,7 @@ const TableComponent = () => {
       params,
     })
       .then((response) => {
+        console.log('response.data', response.data);
         setTableData(response.data);
         setLoading(false);
       })
@@ -74,40 +76,45 @@ const TableComponent = () => {
       page: pag.current || 1,
     };
 
-    getTableData({ params });
+    setDataParams(params);
   };
 
   const columns = [
     {
-      title: 'Symbol',
-      dataIndex: 'symbol',
-      key: 'symbol',
-      width: '20%',
+      title: 'Rank',
+      dataIndex: 'market_cap_rank',
+      key: 'market_cap_rank',
+      width: '60px',
     },
     {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      width: '20%',
-      render: (text: string) => <Link to={`/${text}`}>{text}</Link>,
+      dataIndex: 'image',
+      key: 'image',
+      render: (image: string, row: any) => {
+        return (
+          <Link to={`/${row.id}`}>
+            <Space size={14}>
+              <Avatar src={image} icon={<UserOutlined />} />
+              <Typography.Text>{row.name}</Typography.Text>
+            </Space>
+          </Link>
+        );
+      },
     },
     {
       title: '24H cap change',
       dataIndex: 'market_cap_change_percentage_24h',
       key: 'market_cap_change_percentage_24h',
-      width: '20%',
     },
     {
       title: '24H change',
       dataIndex: 'price_change_24h',
       key: 'price_change_24h',
-      width: '20%',
     },
     {
-      title: 'Max supply',
-      dataIndex: 'max_supply',
-      key: 'max_supply',
-      width: '20%',
+      title: 'Volume',
+      dataIndex: 'total_volume',
+      key: 'total_volume',
     },
   ];
 
@@ -115,7 +122,7 @@ const TableComponent = () => {
     <Table
       dataSource={tableData}
       columns={columns}
-      pagination={{ total: 50, showSizeChanger: true }}
+      pagination={{ total: 200, showSizeChanger: true }}
       loading={loading}
       onChange={handleTableChange}
       style={{ maxWidth: '1400px', margin: '0 auto' }}
