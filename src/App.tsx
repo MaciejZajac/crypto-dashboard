@@ -4,6 +4,8 @@ import CoinViewContainer from './containers/Home/CoinViewContainer';
 import TableViewContainer from './containers/Home/TableViewContainer';
 import CustomLayout from './containers/Layout/CustomLayout';
 
+import 'antd/dist/antd.less';
+
 const App = () => {
   return (
     <BrowserRouter>
