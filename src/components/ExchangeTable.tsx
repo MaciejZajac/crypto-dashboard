@@ -69,7 +69,6 @@ const ExchangeTable = ({ params }: ITableComponent) => {
       loading={loading}
       onChange={handleTableChange}
       onRow={(record: any) => {
-        console.log('record', record);
         return {
           onClick: () => {
             history.push(`/exchanges/${record.id}`);

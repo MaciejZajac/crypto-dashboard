@@ -44,7 +44,6 @@ const CoinViewContainer = () => {
       .then((response) => {
         setCoindDetails(response.data);
         setLoading(false);
-        console.log('response', response);
       })
       .catch((err) => {
         setLoading(false);
@@ -52,7 +51,6 @@ const CoinViewContainer = () => {
       });
   };
   const { description } = coinDetails;
-  console.log('description?.en', description?.en);
   if (loading) return <div>Loading...</div>;
   return <div>{description && parse(description.en)}</div>;
 };

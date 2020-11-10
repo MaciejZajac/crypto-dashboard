@@ -27,13 +27,11 @@ const ExchangesViewContainer = () => {
   }, [dataParams]);
 
   const getExchangeData = (params: IExchange) => {
-    console.log('params', params);
     setLoading(true);
     Axios.get('https://api.coingecko.com/api/v3/exchanges', {
       params,
     })
       .then((response) => {
-        console.log('response.data', response.data);
         setTableData(response.data);
         setLoading(false);
       })

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Space, Table, Typography } from 'antd';
+import { Avatar, Col, Row, Space, Table, Typography } from 'antd';
 import { TablePaginationConfig } from 'antd/lib/table';
 import { useHistory } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
@@ -53,22 +53,24 @@ const MarketsTable = ({ params }: ITableComponent) => {
   ];
 
   return (
-    <Table
-      dataSource={tableData}
-      columns={columns}
-      pagination={{ total: 200, showSizeChanger: true }}
-      loading={loading}
-      onChange={handleTableChange}
-      onRow={(record: any) => {
-        console.log('record', record);
-        return {
-          onClick: () => {
-            history.push(`/coins/${record.id}`);
-          },
-        };
-      }}
-      style={{ maxWidth: '1400px', margin: '0 auto' }}
-    />
+    <Row>
+      <Col xl={18} offset={3}>
+        <Table
+          dataSource={tableData}
+          columns={columns}
+          pagination={{ total: 200, showSizeChanger: true }}
+          loading={loading}
+          onChange={handleTableChange}
+          onRow={(record: any) => {
+            return {
+              onClick: () => {
+                history.push(`/coins/${record.id}`);
+              },
+            };
+          }}
+        />
+      </Col>
+    </Row>
   );
 };
 

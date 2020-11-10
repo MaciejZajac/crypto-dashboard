@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import MarketsTable from '../../components/MarketsTable';
-import { Col, Row, Typography } from 'antd';
 import { IFResponse } from '../../types';
 import Axios from 'axios';
 import { TablePaginationConfig } from 'antd/lib/table';
+import GlobalNavInfo from '../../components/GlobalNavInfo';
 
 enum Currency {
   USD = 'usd',
@@ -30,6 +30,7 @@ const defaultParams: IDataParams = {
 };
 
 const MarketsViewContainer = () => {
+  const [globalData, setGlobalData] = useState<any>({});
   const [dataParams, setDataParams] = useState<IDataParams>(defaultParams);
   const [tableData, setTableData] = useState<IFResponse[]>([]);
   const [pagination, setPagination] = useState<any>({
@@ -37,6 +38,14 @@ const MarketsViewContainer = () => {
     pageSize: 10,
   });
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    Axios.get('https://api.coingecko.com/api/v3/global')
+      .then((response) => {
+        setGlobalData(response.data.data);
+      })
+      .catch((err) => console.log('err'));
+  }, []);
 
   useEffect(() => {
     getTableData({ params: dataParams });
@@ -76,12 +85,7 @@ const MarketsViewContainer = () => {
 
   return (
     <>
-      <Row>
-        <Col xl={12}>
-          {/* <Typography.Text>Lorem ipsum</Typography.Text> */}
-          <Typography.Title>CoinGecko API cryptoDashbord</Typography.Title>
-        </Col>
-      </Row>
+      <GlobalNavInfo data={globalData} />
       <MarketsTable params={{ tableData, loading, handleTableChange }} />
     </>
   );
