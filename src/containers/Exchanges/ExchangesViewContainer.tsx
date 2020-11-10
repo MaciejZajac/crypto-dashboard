@@ -58,11 +58,7 @@ const ExchangesViewContainer = () => {
     setDataParams(params);
   };
 
-  return (
-    <>
-      <ExchangeTable params={{ tableData, loading, handleTableChange }} />
-    </>
-  );
+  return <ExchangeTable params={{ tableData, loading, handleTableChange }} />;
 };
 
 export default ExchangesViewContainer;

@@ -2,6 +2,7 @@ import { Typography } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
 import Table, { TablePaginationConfig } from 'antd/lib/table';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 interface ITableComponent {
   params: {
@@ -12,6 +13,7 @@ interface ITableComponent {
 }
 
 const ExchangeTable = ({ params }: ITableComponent) => {
+  const history = useHistory();
   const { tableData, loading, handleTableChange } = params;
   const columns = [
     {
@@ -66,6 +68,14 @@ const ExchangeTable = ({ params }: ITableComponent) => {
       pagination={{ total: 100, showSizeChanger: true }}
       loading={loading}
       onChange={handleTableChange}
+      onRow={(record: any) => {
+        console.log('record', record);
+        return {
+          onClick: () => {
+            history.push(`/exchanges/${record.id}`);
+          },
+        };
+      }}
       style={{ maxWidth: '1400px', margin: '0 auto' }}
     />
   );

@@ -11,20 +11,19 @@ const CustomHeader = () => {
   };
 
   return (
-    <Header>
+    <Header style={{ background: '#fff', height: '65px' }}>
       <div className='logo' />
       <Menu
-        theme='dark'
         onClick={handleClick}
         selectedKeys={[current]}
         mode='horizontal'
         style={{ maxWidth: '1400px', margin: '0 auto' }}
       >
-        <Menu.Item key='crypto' icon={<MailOutlined />}>
+        <Menu.Item key='crypto'>
           <Link to='/'>CryptoDashboard</Link>
         </Menu.Item>
-        <Menu.Item key='markets' icon={<MailOutlined />}>
-          <Link to='/markets'>Markets</Link>
+        <Menu.Item key='markets'>
+          <Link to='/exchanges'>Markets</Link>
         </Menu.Item>
       </Menu>
     </Header>

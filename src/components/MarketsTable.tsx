@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar, Space, Table, Typography } from 'antd';
 import { TablePaginationConfig } from 'antd/lib/table';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
 
 interface ITableComponent {
@@ -13,6 +13,7 @@ interface ITableComponent {
 }
 
 const MarketsTable = ({ params }: ITableComponent) => {
+  const history = useHistory();
   const { tableData, loading, handleTableChange } = params;
   const columns = [
     {
@@ -27,12 +28,10 @@ const MarketsTable = ({ params }: ITableComponent) => {
       key: 'image',
       render: (image: string, row: any) => {
         return (
-          <Link to={`/coins/${row.id}`}>
-            <Space size={14}>
-              <Avatar src={image} icon={<UserOutlined />} />
-              <Typography.Text>{row.name}</Typography.Text>
-            </Space>
-          </Link>
+          <Space size={14}>
+            <Avatar src={image} icon={<UserOutlined />} />
+            <Typography.Text>{row.name}</Typography.Text>
+          </Space>
         );
       },
     },
@@ -60,6 +59,14 @@ const MarketsTable = ({ params }: ITableComponent) => {
       pagination={{ total: 200, showSizeChanger: true }}
       loading={loading}
       onChange={handleTableChange}
+      onRow={(record: any) => {
+        console.log('record', record);
+        return {
+          onClick: () => {
+            history.push(`/coins/${record.id}`);
+          },
+        };
+      }}
       style={{ maxWidth: '1400px', margin: '0 auto' }}
     />
   );
